@@ -1,0 +1,74 @@
+classDiagram
+    User <|-- HumanPlayer
+    Player <|-- HumanPlayer
+    Player <|-- BotPlayer
+
+    class Game{
+        + startGame(List<Player>, int size)
+        + Board board
+        + List<Player> listofPlayers
+    }
+    class Board{
+        +List<Cell> cells
+        + refreshboard()
+    }
+    class Player{
+        <<abstract>>
+        + Symbol
+        + makemove(Cell cell)
+    }
+    class Cell{
+        + int x
+        + int y
+        + Symbol
+        + bollean isOccupied
+    }
+    class User{
+        <<abstract>>
+        + String name
+        + String email
+        + String profilePic
+        + List<GameHistory> 
+    }
+
+    class GameHistory{
+        + User 
+        + List<Moves> previousMoves
+        + Board
+        + Game
+
+    }
+    class HumanPlayer {
+
+    }
+    class BotPlayer {
+        + BotLevel difficultyLevel;
+    }
+    class BotLevel {
+        <<Enumeration>>
+        + High
+        + Medium
+        + Easy
+    }
+
+    class PlayingStrategy{
+        <<Interface>>
+         + getNextMove(Board,CureentPlayerSymbol)
+    }
+
+    class HighLevelPlayingStrategy{ 
+    }
+    class EasyLevelPlayingStrategy{
+    }
+    class MediumLevelPlayingStrategy{
+    }
+
+    PlayingStrategy <|.. HighLevelPlayingStrategy
+    PlayingStrategy <|.. MediumLevelPlayingStrategy
+    PlayingStrategy <|.. EasyLevelPlayingStrategy
+    BotPlayer  "1" --* "n" PlayingStrategy
+    User  "1" --* "n" GameHistory
+    Game "1" --* "1" Board
+    Game "1"--* "*" Player
+    Board "1" --*  "*" Cell
+
